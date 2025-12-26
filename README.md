@@ -256,12 +256,6 @@ The package is built with:
 - Check that `messageAlignment` is set to a visible position
 - Ensure the overlay color is not completely opaque, blocking the message
 
-## ☕ Support
-
-If you found this package helpful, consider buying me a coffee! ☕
-
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFD700?style=flat&logoColor=black&link=https://buymeacoffee.com/abhijithsabudev)](https://buymeacoffee.com/abhijithsabudev)
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -269,6 +263,20 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🤝 Contributing
 
 Contributions are welcome! Feel free to open issues or submit pull requests.
+
+---
+
+## ☕ Love This Package?
+
+If you found **flutter_feature_hint** helpful and it saved you time, consider supporting the development! Your support helps me create more amazing packages for the Flutter community.
+
+<div align="center">
+
+[![Support](https://img.shields.io/badge/☕_Buy%20Me%20A%20Coffee-Support%20My%20Work-yellow?style=for-the-badge)](https://buymeacoffee.com/abhijithsabudev)
+
+**Help fuel more open-source magic!** 🚀
+
+</div>
 
 ## 📚 Example App
 
