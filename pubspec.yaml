@@ -1,6 +1,6 @@
 name: flutter_feature_hint
 description: "Create interactive feature tutorials with gesture-driven overlays. Users must perform actual gestures on your UI to dismiss hints - perfect for onboarding."
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/abhijithsabudev/flutter_feature_hint.git
 
 platforms:
