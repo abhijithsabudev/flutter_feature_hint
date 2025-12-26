@@ -1,7 +1,7 @@
 name: flutter_feature_hint
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
+homepage: https://github.com/abhijithsabudev/flutter_feature_hint.git
 
 environment:
   sdk: ^3.10.4
