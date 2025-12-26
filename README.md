@@ -26,29 +26,29 @@ The example app demonstrates a beautiful task manager UI with:
 <table>
   <tr>
     <td align="center">
-      <img src="docs/gifs/swipe_left.gif" width="200" alt="Swipe Left"/>
+      <img src="https://raw.githubusercontent.com/abhijithsabudev/flutter_feature_hint/main/docs/gifs/swipe_left.gif" width="200" alt="Swipe Left"/>
       <br><b>Swipe Left</b>
     </td>
     <td align="center">
-      <img src="docs/gifs/swipe_right.gif" width="200" alt="Swipe Right"/>
+      <img src="https://raw.githubusercontent.com/abhijithsabudev/flutter_feature_hint/main/docs/gifs/swipe_right.gif" width="200" alt="Swipe Right"/>
       <br><b>Swipe Right</b>
     </td>
     <td align="center">
-      <img src="docs/gifs/swipe_up.gif" width="200" alt="Swipe Up"/>
+      <img src="https://raw.githubusercontent.com/abhijithsabudev/flutter_feature_hint/main/docs/gifs/swipe_up.gif" width="200" alt="Swipe Up"/>
       <br><b>Swipe Up</b>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="docs/gifs/swipe_down.gif" width="200" alt="Swipe Down"/>
+      <img src="https://raw.githubusercontent.com/abhijithsabudev/flutter_feature_hint/main/docs/gifs/swipe_down.gif" width="200" alt="Swipe Down"/>
       <br><b>Swipe Down</b>
     </td>
     <td align="center">
-      <img src="docs/gifs/tap.gif" width="200" alt="Tap"/>
+      <img src="https://raw.githubusercontent.com/abhijithsabudev/flutter_feature_hint/main/docs/gifs/tap.gif" width="200" alt="Tap"/>
       <br><b>Tap</b>
     </td>
     <td align="center">
-      <img src="docs/gifs/long_press.gif" width="200" alt="Long Press"/>
+      <img src="https://raw.githubusercontent.com/abhijithsabudev/flutter_feature_hint/main/docs/gifs/long_press.gif" width="200" alt="Long Press"/>
       <br><b>Long Press</b>
     </td>
   </tr>
