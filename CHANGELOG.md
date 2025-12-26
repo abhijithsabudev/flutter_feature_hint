@@ -1,34 +1,38 @@
-## 0.0.1
+## 0.1.0 - 2025-12-26
 
-* Initial release
-* Support for 6 gesture types (swipe left/right/up/down, tap, long press)
-* Animated hand gestures
-* Spotlight effect for highlighting specific widgets
-* Customizable overlay appearance
-* Haptic feedback
-* Sequential hint support
-```
+### ✨ Major Features
+- **Full-Screen Overlay System**: Overlays now cover the entire screen while precisely positioning the animation icon over the wrapped widget
+- **Auto-Playing Animations**: Animations play automatically without requiring user interaction
+- **Enhanced Widget Message System**: Changed message parameter from String to Widget for maximum flexibility and custom styling
+- **Smooth Fade Animations**: Implemented FadeTransition for professional fade in/out effects
+- **Responsive Design**: Works seamlessly with widgets of any size, from tiny buttons to entire lists
+- **Complete Position Tracking**: Animation icon automatically positions over the wrapped widget using Transform.translate
 
-### `LICENSE`
-```
-MIT License
+### 🎨 UI/UX Improvements
+- Beautiful example app with Material 3 design
+- Modern gradient themes and card-based layouts
+- Enhanced visual feedback with smooth transitions
+- Professional message box styling with shadows and elevation
+- Improved icon animations with gesture-specific directions
 
-Copyright (c) 2025 [Your Name]
+### 🔧 Code Quality
+- Comprehensive dartdoc comments on all public APIs
+- Input validation with assertions for duration and icon size
+- Proper resource cleanup in dispose()
+- Safe render box access with hasSize checks
+- Try-catch protection for layout edge cases
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+### 📚 Documentation
+- Complete README with usage examples and customization guide
+- Detailed parameter documentation
+- Architecture and how-it-works explanation
+- Troubleshooting guide for common issues
+- Example app demonstrating all features
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## 0.0.1 - Initial Release
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+- Initial release with basic gesture hint functionality
+- Support for 6 gesture types (swipe left/right/up/down, tap, long press)
+- Animated hand gestures
+- Customizable overlay appearance
+- Basic message display

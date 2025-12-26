@@ -1,0 +1,12 @@
+# Place your GIF files here
+
+This directory should contain 6 GIF files demonstrating the feature hint package gestures:
+
+1. swipe_left.gif - Demonstrates the swipe left gesture animation
+2. swipe_right.gif - Demonstrates the swipe right gesture animation
+3. swipe_up.gif - Demonstrates the swipe up gesture animation
+4. swipe_down.gif - Demonstrates the swipe down gesture animation
+5. tap.gif - Demonstrates the tap gesture animation
+6. long_press.gif - Demonstrates the long press gesture animation
+
+Each GIF should be approximately 200x400 pixels and show the overlay with the animated gesture on a demo UI.
