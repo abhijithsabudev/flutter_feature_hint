@@ -1,25 +1,139 @@
 # flutter_feature_hint
 
-A beautiful Flutter package for creating smooth, auto-playing feature hint overlays with animated gestures. Perfect for onboarding, feature discovery, and user education.
+A beautiful, production-ready Flutter package for creating smooth, auto-playing feature hint overlays with animated gestures. Perfect for onboarding, feature discovery, and user education.
 
 ## ✨ Features
 
-- 🎯 **Full-Screen Overlays**: Cover the entire screen while highlighting the target widget
-- 🎬 **Auto-Playing Animations**: No user interaction required - animations play automatically
-- ✨ **Animated Gestures**: Visual demonstrations of swipe, tap, and long-press actions
-- 🎨 **Highly Customizable**: Control colors, duration, message widgets, icon sizes, and positioning
-- 🚀 **Smooth Fade Animations**: Professional fade in/out transitions
-- 📱 **Responsive Design**: Works with widgets of any size, from tiny buttons to entire lists
-- 🎯 **Precise Positioning**: Animation icon automatically positions over the wrapped widget
-- 🔧 **Zero Dependencies**: Uses only Flutter's built-in widgets and animations
+### 🎯 Core Features
+- **Full-Screen Overlays**: Cover the entire screen while highlighting the target widget
+- **Bounded Overlays** ⭐ **NEW**: Constrain overlay to specific widget bounds (no full-screen dimming)
+- **Auto-Playing Animations**: No user interaction required - animations play automatically
+- **6 Gesture Types**: Swipe (left, right, up, down), Tap, Long-press
+- **Smooth Fade Animations**: Professional fade in/out transitions (300ms)
 
-## 📸 Demo
+### 🎨 Customization & Control
+- **Highly Customizable**: Control colors, duration, message widgets, custom icons
+- **Optional Messages** ⭐ **NEW**: Display custom message widgets or show animation only
+- **Widget-Based Icons** ⭐ **NEW**: Pass any Widget as custom gesture indicator (not just IconData)
+- **Lottie & Custom Animations** ⭐ **NEW**: Use Lottie animations or any custom widgets as icons
+- **Auto Icon Detection**: Gesture-appropriate icons are auto-selected if no custom icon provided
+- **Flexible Positioning**: Message alignment control (top, center, bottom, etc.)
+- **Play Once in Lifetime** ⭐: Show animations only once per unique key with persistent storage
+- **Responsive Design**: Works with widgets of any size
+- **Overflow Protection**: Smart positioning prevents off-screen rendering
 
-The example app demonstrates a beautiful task manager UI with:
-- Dismissible list items with swipe animations
-- Modern gradient design with Material 3
-- Feature hint overlay showing swipe gestures
-- Smooth transitions and feedback
+### 🚀 Production Features
+- **Zero Dependencies**: Uses only Flutter's built-in widgets and animations
+- **Memory Efficient**: Proper resource cleanup, no memory leaks, Timer cancellation
+- **Thread-Safe**: Race condition prevention with initialization locks
+- **Persistent State**: Animations remembered across app restarts via SharedPreferences
+- **Graceful Degradation**: Storage failures don't break the animation
+- **Comprehensive Error Handling**: Try-catch protection around all critical operations
+- **Production Ready**: Thoroughly tested edge cases and lifecycle management
+
+## 🆕 What's New in v0.2.0+
+
+### 1. Bounded Overlay Feature ⭐
+The new `limitToChildBounds` parameter allows you to constrain the entire overlay (background, message, and animation) to the bounds of the wrapped widget.
+
+**Use Cases:**
+- Highlight specific components without full-screen dimming
+- Create focused tutorials on UI sections
+- Prevent overlay spillover on complex layouts
+- Highlight cards, buttons, or form sections
+
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'button_hint',
+  limitToChildBounds: true, // ⭐ NEW: Constrain to child widget bounds
+  gesture: GestureType.tap,
+  message: Text('Tap this button'),
+  child: YourButton(),
+)
+```
+
+### 2. Play Once in Lifetime Feature ⭐
+Show animations only once per unique key using persistent storage! The `playOnceInLifetime` parameter combined with `uniqueKey` ensures animations play only once, even across app restarts.
+
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'onboarding_welcome', // ⭐ Unique identifier
+  playOnceInLifetime: true,         // ⭐ Play only once ever!
+  gesture: GestureType.tap,
+  message: const Text('Welcome to the app!'),
+  child: YourWidget(),
+)
+```
+
+**How it works:**
+- Animation state is saved to device storage via SharedPreferences
+- Once played, the animation won't show again (even after app restart)
+- Perfect for onboarding sequences that shouldn't repeat
+- Can be reset programmatically with `AnimationStateManager.resetAnimation('key')`
+
+### 3. Required uniqueKey ⭐
+The `uniqueKey` is now mandatory, enabling proper state tracking for `playOnceInLifetime` and better animation management.
+
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'delete_action_hint', // ⭐ REQUIRED - must be unique
+  gesture: GestureType.swipeLeft,
+  message: const Text('Swipe left to delete'),
+  child: YourWidget(),
+)
+```
+
+### 4. Optional Message ⭐
+The `message` parameter is now optional. Show just the animation if you prefer!
+
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'swipe_hint',
+  gesture: GestureType.swipeRight,
+  // No message - just the animation!
+  duration: const Duration(seconds: 3),
+  child: YourWidget(),
+)
+```
+
+### 5. Widget-Based Custom Icons ⭐
+`customIcon` now accepts any Widget instead of just IconData. More flexible and powerful!
+
+```dart
+// Before (v0.0.2):
+// customIcon: Icons.favorite (IconData)
+
+// After (v0.2.0):
+customIcon: Icon(
+  Icons.favorite,
+  size: 48,
+  color: Colors.red,
+)
+
+// Or any widget:
+customIcon: Badge(
+  label: const Text('2'),
+  child: Icon(Icons.notifications, size: 48),
+)
+
+// Or Lottie animation:
+customIcon: Lottie.asset(
+  'assets/animations/hand_swipe.json',
+  width: 100,
+  height: 100,
+)
+```
+
+### 6. Memory Leak Fixes ⭐
+- Fixed untracked Future.delayed causing memory leaks
+- Proper Timer cancellation on widget disposal
+- Safe frame callback management
+
+### Other Improvements ⭐
+- Auto-detection of icons based on GestureType
+- Enhanced overflow protection
+- Better error messages in debug mode
+- Improved documentation and examples
 
 ### Gesture Demonstrations
 
@@ -60,7 +174,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_feature_hint: ^0.0.2
+  flutter_feature_hint: ^0.2.0
 ```
 
 Then run:
@@ -69,240 +183,384 @@ Then run:
 flutter pub get
 ```
 
-## 📖 Usage
+## 📖 Quick Start
 
-### Basic Example
+### 1. Basic Full-Screen Overlay
 
 ```dart
 import 'package:flutter_feature_hint/flutter_feature_hint.dart';
 
 FeatureHintOverlay(
+  uniqueKey: 'delete_action_hint',
   message: const Text('Swipe left to delete'),
   gesture: GestureType.swipeLeft,
   duration: const Duration(seconds: 5),
+  playOnceInLifetime: true,
   child: YourWidget(),
 )
 ```
 
-### With Custom Styling
+### 2. Bounded Overlay - Constrain to Widget ⭐
 
 ```dart
 FeatureHintOverlay(
+  uniqueKey: 'card_action_hint',
+  limitToChildBounds: true, // ⭐ NEW: Constrain overlay to this widget
+  gesture: GestureType.tap,
   message: Container(
-    padding: const EdgeInsets.symmetric(horizontal: 12),
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      color: Colors.blue.shade700,
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: const Text(
+      'Tap this card',
+      style: TextStyle(color: Colors.white),
+    ),
+  ),
+  child: Container(
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.blue.shade50,
+      border: Border.all(color: Colors.blue.shade200),
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: const Text('Interactive Card'),
+  ),
+)
+```
+
+### 3. Animation Only (No Message) ⭐
+
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'swipe_hint',
+  // No message parameter - just show the animation!
+  gesture: GestureType.swipeRight,
+  duration: const Duration(seconds: 3),
+  child: YourWidget(),
+)
+```
+
+### 4. Play Once in Lifetime ⭐
+
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'onboarding_welcome',
+  playOnceInLifetime: true, // ⭐ Show only once ever!
+  gesture: GestureType.tap,
+  message: const Text('Welcome! Tap to get started'),
+  duration: const Duration(seconds: 4),
+  child: YourWidget(),
+)
+```
+
+### 5. Custom Widget Icon ⭐
+
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'custom_icon_hint',
+  gesture: GestureType.tap,
+  customIcon: Icon(
+    Icons.favorite,
+    size: 48,
+    color: Colors.red,
+  ),
+  message: const Text('Like this'),
+  child: YourWidget(),
+)
+```
+
+### 6. Lottie Animation Icon ⭐
+
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'lottie_hint',
+  gesture: GestureType.swipeLeft,
+  customIcon: Lottie.asset(
+    'assets/animations/hand_swipe.json',
+    width: 100,
+    height: 100,
+  ),
+  message: const Text('Swipe to delete'),
+  child: YourWidget(),
+)
+```
+
+### 7. With Styled Message
+
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'styled_hint',
+  gesture: GestureType.swipeLeft,
+  duration: const Duration(seconds: 4),
+  message: Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    decoration: BoxDecoration(
+      color: Colors.deepPurple,
+      borderRadius: BorderRadius.circular(8),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.3),
+          blurRadius: 8,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: 32,
-          height: 32,
-          decoration: BoxDecoration(
-            color: Colors.indigo[100],
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(
-            Icons.touch_app,
-            size: 18,
-            color: Colors.indigo,
-          ),
-        ),
-        const SizedBox(height: 12),
+        const Icon(Icons.delete_outline, color: Colors.white),
+        const SizedBox(height: 8),
         const Text(
-          "Try swiping items!",
+          'Swipe to delete',
           style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          "Swipe left to delete or right to complete",
-          style: TextStyle(
-            fontSize: 13,
-            color: Colors.grey[600],
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ],
     ),
   ),
-  gesture: GestureType.swipeLeft,
-  duration: const Duration(seconds: 6),
-  iconSize: 48,
-  iconColor: Colors.white,
-  overlayColor: const Color(0xBF000000),
-  child: YourListView(),
-)
-```
-
-### Available Gesture Types
-
-```dart
-enum GestureType {
-  swipeLeft,      // Horizontal swipe to the left
-  swipeRight,     // Horizontal swipe to the right
-  swipeUp,        // Vertical swipe upward
-  swipeDown,      // Vertical swipe downward
-  tap,            // Single tap gesture
-  longPress,      // Long press gesture
-}
-```
-
-### Parameters
-
-- **`message`** (Widget, required): Custom widget to display as the hint message
-- **`gesture`** (GestureType, required): The gesture type to animate
-- **`child`** (Widget, required): The widget to wrap with the overlay
-- **`duration`** (Duration, default: 4 seconds): How long to show the overlay
-- **`shouldPlay`** (bool, default: true): Whether to show the overlay
-- **`onCompleted`** (VoidCallback?): Callback when the overlay animation completes
-- **`showHandAnimation`** (bool, default: true): Whether to show the gesture animation
-- **`overlayColor`** (Color, default: semi-transparent black): Background color of the overlay
-- **`messageAlignment`** (AlignmentGeometry, default: topCenter): Position of the message box
-- **`customIcon`** (IconData?): Custom icon to animate instead of the hand gesture
-- **`iconSize`** (double, default: 60.0): Size of the animated icon
-- **`iconColor`** (Color, default: white): Color of the animated icon
-
-### With Callback
-
-```dart
-FeatureHintOverlay(
-  message: const Text('Learn this gesture!'),
-  gesture: GestureType.tap,
   child: YourWidget(),
-  onCompleted: () {
-    print('Hint animation completed!');
-    // Update UI state, navigate, etc.
-  },
 )
 ```
 
-### Conditional Display
+## 📋 Complete Parameters
 
 ```dart
 FeatureHintOverlay(
-  message: const Text('First time? Swipe left!'),
-  gesture: GestureType.swipeLeft,
-  shouldPlay: isFirstTime, // Only show on first visit
-  child: YourListView(),
+  // REQUIRED
+  child: Widget,                          // Widget to wrap with overlay
+  gesture: GestureType,                   // Gesture to animate
+  uniqueKey: String,                      // Unique identifier for state tracking
+
+  // OPTIONAL - Message & Icons
+  message: Widget?,                       // Custom message widget (optional!)
+  customIcon: Widget?,                    // Custom icon widget
+  
+  // OPTIONAL - Behavior
+  duration: Duration,                     // How long to show overlay (default: 4s)
+  shouldPlay: bool,                       // Whether to show overlay (default: true)
+  playOnceInLifetime: bool,              // Show only once (default: false)
+  limitToChildBounds: bool,               // ⭐ Constrain to child bounds (default: false)
+  
+  // OPTIONAL - Styling
+  overlayColor: Color,                    // Background color (default: semi-transparent black)
+  messageAlignment: AlignmentGeometry,    // Message position (default: topCenter)
+  
+  // OPTIONAL - Behavior
+  showHandAnimation: bool,                // Show gesture animation (default: true)
+  onCompleted: VoidCallback?,            // Callback when animation finishes
 )
 ```
-
-## 🎨 Customization Guide
-
-### Change Message Position
-
-```dart
-FeatureHintOverlay(
-  messageAlignment: Alignment.bottomCenter, // Top, bottom, center, etc.
-  // ... other parameters
-)
-```
-
-### Use Custom Icon
-
-```dart
-FeatureHintOverlay(
-  customIcon: Icons.favorite,
-  iconColor: Colors.red,
-  iconSize: 80,
-  // ... other parameters
-)
-```
-
-### Customize Overlay Appearance
-
-```dart
-FeatureHintOverlay(
-  overlayColor: const Color(0xAA000000), // Semi-transparent dark
-  messageAlignment: Alignment.center,
-  // ... other parameters
-)
-```
-
-## 🏗️ Architecture
-
-The package is built with:
-
-- **FeatureHintOverlay**: Main widget that wraps your UI with the overlay
-- **AnimatedHandGesture**: Handles gesture-specific animations (swipes, taps, etc.)
-- **GestureType**: Enum defining supported gesture animations
-
-### How It Works
-
-1. **Initialization**: When `FeatureHintOverlay` is rendered, it wraps your widget in a `Stack`
-2. **Overlay Creation**: After the first frame is laid out, a full-screen overlay is displayed with a fade animation
-3. **Animation**: The gesture animation icon is positioned exactly over your wrapped widget
-4. **Auto-Dismiss**: After the specified duration, the overlay fades out automatically
-5. **Callback**: The `onCompleted` callback is triggered when the animation finishes
-
-## 🐛 Troubleshooting
-
-### Animation Not Visible
-
-- Ensure `shouldPlay` is set to `true`
-- Check that `showHandAnimation` is not `false`
-- Verify the overlay duration is long enough to see the animation
-
-### Icon Not Positioned Correctly
-
-- Ensure the wrapped widget has been fully laid out (happens automatically)
-- The icon should appear centered on your wrapped widget
-- If the widget is off-screen, the icon will also be off-screen
-
-### Message Box Not Showing
-
-- Verify the `message` parameter is a valid Widget
-- Check that `messageAlignment` is set to a visible position
-- Ensure the overlay color is not completely opaque, blocking the message
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to open issues or submit pull requests.
-
----
-
-## ☕ Love This Package?
-
-If you found **flutter_feature_hint** helpful and it saved you time, consider supporting the development! Your support helps me create more amazing packages for the Flutter community.
-
-<div align="center">
-
-[![Support](https://img.shields.io/badge/☕_Buy%20Me%20A%20Coffee-Support%20My%20Work-yellow?style=for-the-badge)](https://buymeacoffee.com/abhijithsabudev)
-
-**Help fuel more open-source magic!** 🚀
-
-</div>
-
-## 📚 Example App
-
-Check out the `example/` directory for a complete working example with a beautiful task manager UI demonstrating:
-- Multiple feature hints
-- Custom message styling
-- Integration with dismissible list items
-- Modern Material 3 design
 
 ## 🎯 Use Cases
 
-- **Onboarding**: Guide users through your app's features
-- **Feature Discovery**: Highlight new features to existing users
-- **Tutorial Mode**: Show gesture-based interactions visually
-- **First-Time UX**: Educate users without interrupting their experience
-- **A/B Testing**: Test different onboarding approaches
+### 1. Onboarding Tutorials
+Show new users how to interact with your app's key features.
 
-## 📊 Requirements
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'onboarding_swipe',
+  playOnceInLifetime: true,
+  gesture: GestureType.swipeLeft,
+  message: const Text('Swipe to explore'),
+  child: yourFirstFeature,
+)
+```
 
-- Flutter: ^3.0.0
-- Dart: ^2.17.0
+### 2. Feature Discovery
+Highlight new features or updates.
 
-## 🔄 Version History
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'new_feature_tap',
+  gesture: GestureType.tap,
+  message: const Text('Tap to try our new feature!'),
+  limitToChildBounds: true, // Only highlight the button
+  child: newFeatureButton,
+)
+```
 
-See [CHANGELOG.md](CHANGELOG.md) for a list of all changes and new features.
+### 3. Focused UI Tutorials
+Guide users through specific UI sections without full-screen overlay.
+
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'form_section_hint',
+  limitToChildBounds: true,
+  gesture: GestureType.tap,
+  message: const Text('Complete this section'),
+  child: formCard,
+)
+```
+
+## 🔄 State Management
+
+### Play Once in Lifetime
+When `playOnceInLifetime: true`, animations play only once per app session and across restarts.
+
+```dart
+FeatureHintOverlay(
+  uniqueKey: 'welcome_hint',    // Must be unique
+  playOnceInLifetime: true,      // Play only once
+  gesture: GestureType.tap,
+  message: const Text('Welcome!'),
+  child: welcomeButton,
+)
+```
+
+### Reset Animations Programmatically
+
+```dart
+import 'package:flutter_feature_hint/flutter_feature_hint.dart';
+
+// Reset a single animation
+await AnimationStateManager.resetAnimation('welcome_hint');
+
+// Reset all animations
+await AnimationStateManager.resetAllAnimations();
+```
+
+## 🎬 Gesture Types
+
+```dart
+enum GestureType {
+  swipeLeft,    // Swipe from right to left
+  swipeRight,   // Swipe from left to right
+  swipeUp,      // Swipe from bottom to top
+  swipeDown,    // Swipe from top to bottom
+  tap,          // Single tap
+  longPress,    // Long press (2 seconds)
+}
+```
+
+## � Custom Icons & Animations
+
+### Using Custom Widgets
+
+The `customIcon` parameter accepts any Widget, giving you unlimited customization:
+
+```dart
+// Simple icon with color
+customIcon: Icon(Icons.favorite, size: 48, color: Colors.red)
+
+// Badge with icon
+customIcon: Badge(
+  label: const Text('2'),
+  child: Icon(Icons.notifications, size: 48),
+)
+
+// Complex widget
+customIcon: Container(
+  width: 60,
+  height: 60,
+  decoration: BoxDecoration(
+    color: Colors.blue.shade100,
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: const Icon(Icons.touch_app),
+)
+```
+
+### Using Lottie Animations ⭐
+
+You can use Lottie for beautiful, smooth animations instead of static icons:
+
+```dart
+// Add lottie to pubspec.yaml
+// dependencies:
+//   lottie: ^3.0.0
+
+FeatureHintOverlay(
+  uniqueKey: 'swipe_animation',
+  gesture: GestureType.swipeLeft,
+  customIcon: Lottie.asset(
+    'assets/animations/swipe_gesture.json',
+    width: 100,
+    height: 100,
+  ),
+  message: const Text('Swipe to delete'),
+  child: YourWidget(),
+)
+```
+
+### Using Custom Painted Widgets
+
+```dart
+customIcon: CustomPaint(
+  painter: GestureIconPainter(),
+  size: const Size(60, 60),
+)
+```
+
+**Note:** Custom icons are automatically constrained to a maximum of 120x120 pixels and clipped to prevent overflow.
+
+- **FeatureHintOverlay**: Main widget that wraps your UI with the overlay
+- **AnimatedHandGesture**: Renders gesture-specific animations
+- **AnimationStateManager**: Manages persistent animation state via SharedPreferences
+- **GestureType**: Enum defining supported gestures
+
+### How It Works
+
+1. **Initialization**: Wraps your widget in a Stack
+2. **Layout**: Waits for the first frame to calculate child widget bounds
+3. **Overlay Display**: Shows semi-transparent background with fade-in animation
+4. **Gesture Animation**: Positions and animates gesture icon over your widget
+5. **Auto-Dismiss**: Fades out after specified duration
+6. **State Persistence**: Records played animations in SharedPreferences (if `playOnceInLifetime: true`)
+
+## 🚨 Error Handling
+
+The package handles:
+- ✅ Storage unavailable → Falls back to in-memory tracking
+- ✅ Widget disposal during animation → Checks `mounted` before setState
+- ✅ Navigation away → Proper cleanup in dispose()
+- ✅ Rapid rebuilds → Prevents race conditions with state locks
+- ✅ Render box unavailable → Centers animation as fallback
+
+## 📦 Dependencies
+
+- `flutter` (built-in)
+- `shared_preferences: ^2.2.0` (for persistent state)
+
+That's it! Zero other external dependencies.
+
+## 🎨 Example App
+
+The included example app demonstrates:
+- Task manager UI with dismissible items
+- Full-screen overlay with message
+- Bounded overlay (new feature!)
+- Material 3 design
+- Smooth animations and transitions
+
+Run it with:
+
+```bash
+cd example
+flutter run
+```
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details
+
+## 🤝 Contributing
+
+Found a bug? Have a feature request? Issues and PRs welcome!
+
+## 📚 More Info
+
+- **CHANGELOG**: See [CHANGELOG_NEW.md](CHANGELOG_NEW.md) for version history
+- **API Docs**: Full API documentation in [lib/src/feature_hint_overlay.dart](lib/src/feature_hint_overlay.dart)
+- **Features Guide**: Check [FEATURES.md](FEATURES.md) for detailed feature documentation
+- **Migration Guide**: See [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) if upgrading from v0.0.2
+- **Quick Start**: Check [QUICK_START.md](QUICK_START.md)
+- **Documentation Index**: Browse all docs in [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)
 
 ---
 
-Built with ❤️ for Flutter developers
+**Made with ❤️ for beautiful user experiences**
