@@ -3,18 +3,15 @@ import 'models/gesture_type.dart';
 
 /// Animated gesture icon that demonstrates the required gesture
 class AnimatedHandGesture extends StatefulWidget {
+  /// The gesture type to animate
   final GestureType gesture;
-  final Color iconColor;
-  final double iconSize;
-  final IconData? customIcon;
 
-  const AnimatedHandGesture({
-    Key? key,
-    required this.gesture,
-    this.iconColor = Colors.white,
-    this.iconSize = 60.0,
-    this.customIcon,
-  }) : super(key: key);
+  /// Optional custom widget to display instead of auto-detected icon.
+  /// The custom widget should include its own styling, size, and color.
+  final Widget? customIcon;
+
+  const AnimatedHandGesture({Key? key, required this.gesture, this.customIcon})
+    : super(key: key);
 
   @override
   State<AnimatedHandGesture> createState() => _AnimatedHandGestureState();
@@ -97,14 +94,25 @@ class _AnimatedHandGestureState extends State<AnimatedHandGesture>
           offset: _animation.value,
           child: Opacity(
             opacity: 1 - (_controller.value * 0.3),
-            child: Icon(
-              widget.customIcon ?? _getIconForGesture(),
-              size: widget.iconSize,
-              color: widget.iconColor,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 120, maxHeight: 120),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: SingleChildScrollView(
+                  child: widget.customIcon ?? _buildDefaultIcon(),
+                ),
+              ),
             ),
           ),
         );
       },
+    );
+  }
+
+  /// Builds the default icon based on gesture type with white color and 60px size
+  Widget _buildDefaultIcon() {
+    return Center(
+      child: Icon(_getIconForGesture(), size: 60.0, color: Colors.white),
     );
   }
 

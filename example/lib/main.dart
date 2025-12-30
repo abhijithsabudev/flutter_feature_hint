@@ -176,8 +176,9 @@ class _DemoHomePageState extends State<DemoHomePage> {
       gesture: GestureType.swipeRight,
       duration: const Duration(seconds: 6),
       shouldPlay: true,
-      iconSize: 48,
-      customIcon: Icons.swipe_right,
+      playOnceInLifetime: true,
+      uniqueKey: 'swipe_right_hint3',
+      customIcon: const Icon(Icons.swipe_right, size: 48, color: Colors.white),
       onCompleted: () {
         print("Feature hint animation completed!");
       },
@@ -196,38 +197,108 @@ class _DemoHomePageState extends State<DemoHomePage> {
       body: Column(
         children: [
           // Header section with gradient
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.indigo, Colors.indigo[700]!],
+          FeatureHintOverlay(
+            gesture: GestureType.swipeRight,
+            duration: const Duration(seconds: 6),
+            shouldPlay: true,
+            playOnceInLifetime: true,
+            limitToChildBounds: true,
+            uniqueKey: 'header_hint',
+            customIcon: const Icon(
+              Icons.swipe_right,
+              size: 48,
+              color: Colors.white,
+            ),
+            onCompleted: () {
+              print("Feature hint animation completed!");
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.indigo, Colors.indigo[700]!],
+                ),
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
               ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Welcome Back!',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${items.length} Tasks',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Welcome Back!',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+          ),
+          // Example with limitToChildBounds - overlay constrained to widget bounds
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: FeatureHintOverlay(
+              uniqueKey: 'bounded_card_hint2',
+              gesture: GestureType.tap,
+              duration: const Duration(seconds: 4),
+              playOnceInLifetime: true,
+              limitToChildBounds:
+                  true, // New feature: limit overlay to child bounds
+              message: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade700,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  '${items.length} Tasks',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: const Text(
+                  '👆 Tap this card\n(overlay limited to bounds)',
+                  style: TextStyle(color: Colors.white, fontSize: 13),
+                  textAlign: TextAlign.center,
                 ),
-              ],
+              ),
+              customIcon: Icon(
+                Icons.touch_app,
+                size: 48,
+                color: Colors.blue.shade700,
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  border: Border.all(color: Colors.blue.shade200),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Bounded Hint Example',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'The overlay animation and message are constrained within this card\'s bounds when limitToChildBounds is enabled.',
+                      style: TextStyle(fontSize: 13, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           // ListView with height 400
