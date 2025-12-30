@@ -22,15 +22,6 @@ A beautiful, production-ready Flutter package for creating smooth, auto-playing 
 - **Responsive Design**: Works with widgets of any size
 - **Overflow Protection**: Smart positioning prevents off-screen rendering
 
-### 🚀 Production Features
-- **Zero Dependencies**: Uses only Flutter's built-in widgets and animations
-- **Memory Efficient**: Proper resource cleanup, no memory leaks, Timer cancellation
-- **Thread-Safe**: Race condition prevention with initialization locks
-- **Persistent State**: Animations remembered across app restarts via SharedPreferences
-- **Graceful Degradation**: Storage failures don't break the animation
-- **Comprehensive Error Handling**: Try-catch protection around all critical operations
-- **Production Ready**: Thoroughly tested edge cases and lifecycle management
-
 ## 🆕 What's New in v0.2.0+
 
 ### 1. Bounded Overlay Feature ⭐
@@ -66,10 +57,12 @@ FeatureHintOverlay(
 ```
 
 **How it works:**
-- Animation state is saved to device storage via SharedPreferences
 - Once played, the animation won't show again (even after app restart)
 - Perfect for onboarding sequences that shouldn't repeat
+- State persists across app sessions
 - Can be reset programmatically with `AnimationStateManager.resetAnimation('key')`
+
+⚠️ **Important Tip**: Only enable `playOnceInLifetime: true` after you've finalized the UI and fixed all bugs. Once the animation plays, it won't display again unless reset. Use `playOnceInLifetime: false` (default) during development until dev-side testing or ui issues fixed.
 
 ### 3. Required uniqueKey ⭐
 The `uniqueKey` is now mandatory, enabling proper state tracking for `playOnceInLifetime` and better animation management.
@@ -255,6 +248,8 @@ FeatureHintOverlay(
 )
 ```
 
+**💡 Tip**: Set `playOnceInLifetime: false` during testing, switch to `true` only when UI is finalized.
+
 ### 5. Custom Widget Icon ⭐
 
 ```dart
@@ -412,6 +407,8 @@ FeatureHintOverlay(
 )
 ```
 
+⚠️ **Development Tip**: Use `playOnceInLifetime: false` during development so you can test the animation multiple times. Enable `playOnceInLifetime: true` only in production after all UI/bugs are fixed.
+
 ### Reset Animations Programmatically
 
 ```dart
@@ -500,7 +497,7 @@ customIcon: CustomPaint(
 
 - **FeatureHintOverlay**: Main widget that wraps your UI with the overlay
 - **AnimatedHandGesture**: Renders gesture-specific animations
-- **AnimationStateManager**: Manages persistent animation state via SharedPreferences
+- **AnimationStateManager**: Manages persistent animation state across app restarts
 - **GestureType**: Enum defining supported gestures
 
 ### How It Works
@@ -510,7 +507,7 @@ customIcon: CustomPaint(
 3. **Overlay Display**: Shows semi-transparent background with fade-in animation
 4. **Gesture Animation**: Positions and animates gesture icon over your widget
 5. **Auto-Dismiss**: Fades out after specified duration
-6. **State Persistence**: Records played animations in SharedPreferences (if `playOnceInLifetime: true`)
+6. **State Persistence**: Remembers played animations across app sessions (if `playOnceInLifetime: true`)
 
 ## 🚨 Error Handling
 
