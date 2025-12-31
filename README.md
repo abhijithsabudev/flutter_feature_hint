@@ -549,6 +549,18 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 Found a bug? Have a feature request? Issues and PRs welcome!
 
+## ☕ Support
+
+If you found this package helpful, consider buying me a coffee! ☕
+
+<div align="center">
+
+[![Buy Me A Coffee](https://img.shields.io/badge/☕_Buy%20Me%20A%20Coffee-Support%20My%20Work-yellow?style=for-the-badge&logoColor=black&link=https://buymeacoffee.com/abhijithsabudev)](https://buymeacoffee.com/abhijithsabudev)
+
+**Your support fuels more open-source magic!** 🚀
+
+</div>
+
 ## 📚 More Info
 
 - **CHANGELOG**: See [CHANGELOG_NEW.md](CHANGELOG_NEW.md) for version history
